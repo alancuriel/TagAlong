@@ -39,8 +39,9 @@ export default class App extends React.Component {
             </>
           ): (
             <>
-            <Stack.Screen login={this.loginHandler} name="Login" component={LoginScreen} />
-            <Stack.Screen login={this.loginHandler} name="load" component={LoadingScreen} />
+            <Stack.Screen name="Login" component={LoginScreen}
+              options={{title:""}} />
+            <Stack.Screen name="load" component={LoadingScreen} />
             </>
           )}
         </Stack.Navigator>

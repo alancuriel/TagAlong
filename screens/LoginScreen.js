@@ -61,9 +61,9 @@ export default class LoginScreen extends React.Component {
         <TouchableOpacity style={styles.loginButton} onPress={this.handleLogin} >
           <Text style={{ color: "#FFF", fontWeight: "500" }}>Sign In</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ alignSelf: "center", marginTop: 20 }}>
+        <TouchableOpacity style={{ alignSelf: "center", marginTop: 20 }} onPress={ () => this.props.navigation.push("register")} >
           <Text style={{ color: "#414959", fontSize: 13 }}>
-            New to TagAlong?{" "}
+            New to TagAlong? 
             <Text style={{ fontWeight: "500", color: "#E9446A" }}>Sign Up</Text>
           </Text>
         </TouchableOpacity>

@@ -4,12 +4,14 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  LayoutAnimation
 } from "react-native";
 
 import * as firebase from "firebase"
 
 export default class LoginScreen extends React.Component {
+
   state = {
     email: "",
     password: "",
@@ -26,6 +28,7 @@ export default class LoginScreen extends React.Component {
   };
 
   render() {
+    LayoutAnimation.easeInEaseOut();
     return (
       <View style={styles.container}>
         <Text style={styles.greeting}>{"Hello,\nWelcome Back!"}</Text>

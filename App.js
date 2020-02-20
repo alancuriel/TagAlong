@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import LoadingScreen from "./screens/LoadingScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-import HomeScreen from "./screens/HomeScreen";
+import BottomTabNavigator from "./navigation/BottomTabNavigator"
 import {apiKeys} from "./config"
 
 import {Platform, View, StatusBar, StyleSheet} from 'react-native'
@@ -37,11 +37,15 @@ export default class App extends React.Component {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="login">
           {this.state.isLoggedIn? (
-            <Stack.Screen name="home" component={HomeScreen}/>
+            <Stack.Screen name="home" 
+              component={BottomTabNavigator}
+              options={{
+                headerShown: true   
+              }}/>
           ): (
             <>
             <Stack.Screen name="login" component={LoginScreen}
-              options={{title:""}} />
+              options={{title:"", headerShown: false}} />
             <Stack.Screen name="register" component={RegisterScreen}/>
             <Stack.Screen name="load" component={LoadingScreen} />
             </>

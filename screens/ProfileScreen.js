@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import * as firebase from "firebase";
 import Constants from "expo-constants";
@@ -12,7 +12,12 @@ export default class HomeScreen extends React.Component {
   state = {
     email: "",
     displayName: "",
-    photoURL: ""
+    photoURL: "",
+    firstName: "",
+    lastName: "",
+    city: "",
+    state: "",
+    Interests: ""
   };
 
   componentDidMount() {
@@ -63,7 +68,29 @@ export default class HomeScreen extends React.Component {
             <Image source={{uri: this.state.photoURL}} style={styles.profilePic} />
           </TouchableOpacity>
         )}
-        <Text style={{fontSize: 24}}>Hi! {this.state.email}</Text>
+
+
+        <Text style={{fontSize: 14}}>Hi! {this.state.email}</Text>
+
+        <TouchableOpacity>
+          <Text style={styles.edit}>Edit</Text>
+        </TouchableOpacity>
+
+        <Text>First Name</Text>
+        <Text>{this.state.firstName}</Text>
+
+        <Text>Last Name</Text>
+        <Text>{this.state.lastName}</Text>
+
+        <Text>City</Text>
+        <Text>{this.state.city}</Text>
+
+        <Text>State</Text>
+        <Text>{this.state.state}</Text>
+
+        <Text>About Me</Text>
+        <Text>{this.state.Interests}</Text>
+        
 
       <TouchableOpacity style={{marginTop: 32}} onPress={this.signOutUser}>
         <Text>Sign Out</Text>
@@ -91,5 +118,8 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
     borderRadius: 30,
+  },
+  edit: {
+    color: "blue"
   }
 });

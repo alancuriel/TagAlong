@@ -1,6 +1,8 @@
 import { apiKeys } from "./config";
 import firebase from "firebase";
 
+require("firebase/firestore");
+
 class Fire {
   constructor() {
     if (!firebase.apps.length) {
@@ -23,6 +25,27 @@ class Fire {
           uid: this.uid,
           timestamp: this.timestamp,
           image: remoteUri
+        })
+        .then(ref => {
+          res(ref);
+        })
+        .catch(error => {
+          rej(error);
+        });
+    });
+  };
+
+  createUserInfo = ({firstName, lastName, city, State, aboutMe}) => {
+    return new Promise((res, rej) => {
+      this.firestore
+        .collection("users").doc(this.uid)
+        .set({
+          firstName,
+          lastName,
+          city,
+          State,
+          aboutMe,
+          timestamp: this.timestamp,
         })
         .then(ref => {
           res(ref);

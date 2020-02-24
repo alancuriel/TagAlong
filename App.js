@@ -25,27 +25,21 @@ export default class App extends React.Component {
   }
 
   state = {
-    isLoggedIn: false
+    isLoggedIn: undefined
   };
 
-  
+
 
   render () {
     return(
       <View style={styles.container}>
       {Platform.OS === "ios" && <StatusBar barStyle="dark-content" />}
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="login">
-          {this.state.isLoggedIn? (
-            <Stack.Screen name="home" component={HomeScreen}/>
-          ): (
-            <>
-            <Stack.Screen name="login" component={LoginScreen}
-              options={{title:""}} />
-            <Stack.Screen name="register" component={RegisterScreen}/>
-            <Stack.Screen name="load" component={LoadingScreen} />
-            </>
-          )}
+        <Stack.Navigator initialRouteName="load">
+        <Stack.Screen name="home" component={HomeScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="load" component={LoadingScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="register" component={RegisterScreen}/>
+        <Stack.Screen name="login" component={LoginScreen} options={{headerShown:false}}/>
         </Stack.Navigator>
       </NavigationContainer>
       </View>

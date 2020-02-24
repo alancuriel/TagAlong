@@ -4,7 +4,9 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions,
+  Image
 } from "react-native";
 
 import * as firebase from "firebase"
@@ -28,9 +30,13 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.greeting}>{"Hello,\nWelcome Back!"}</Text>
+      <Image style={styles.image}
+      source={require("../assets/biglogo.png")}
+      resizeMode="contain">
+      </Image>
 
         <View style={styles.error}>
+
           {this.state.errorMessage && (
             <Text style={styles.errorMessage}>{this.state.errorMessage}</Text>
           )}
@@ -46,7 +52,7 @@ export default class LoginScreen extends React.Component {
               value={this.state.email}
             ></TextInput>
           </View>
-          <View style={{ marginTop: 32 }}>
+          <View style={styles.passwordForm}>
             <Text style={styles.inputTitle}>Password</Text>
             <TextInput
               style={styles.input}
@@ -62,8 +68,8 @@ export default class LoginScreen extends React.Component {
           <Text style={{ color: "#FFF", fontWeight: "500" }}>Sign In</Text>
         </TouchableOpacity>
         <TouchableOpacity style={{ alignSelf: "center", marginTop: 20 }} onPress={ () => this.props.navigation.push("register")} >
-          <Text style={{ color: "#414959", fontSize: 13 }}>
-            New to TagAlong? 
+          <Text style={{ color: "#000000", fontSize: 13 }}>
+            New to TagAlong?
             <Text style={{ fontWeight: "500", color: "#E9446A" }}>Sign Up</Text>
           </Text>
         </TouchableOpacity>
@@ -72,18 +78,24 @@ export default class LoginScreen extends React.Component {
   }
 }
 
+var {height, width} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "rgba(255,249,82,1)",
+    flexDirection:'column'
   },
-  greeting: {
-    marginTop: 32,
-    fontSize: 18,
-    fontWeight: "400",
-    textAlign: "center"
+  image: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: height * 0.05,
+    width: width * 0.5,
+    height: width * 0.5,
+    marginHorizontal: width * 0.25
   },
   error: {
-    height: 72,
+    height: height * 0.03,
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 30
@@ -95,26 +107,29 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   form: {
-    marginBottom: 48,
+    marginBottom: height * 0.05,
     marginHorizontal: 30
   },
   inputTitle: {
-    color: "#8A8F9E",
+    color: "#000000",
     fontSize: 10,
     textTransform: "uppercase"
   },
+  passwordForm: {
+    marginTop: height * 0.04
+  },
   input: {
-    borderBottomColor: "#8A8F9E",
+    borderBottomColor: "#000000",
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 40,
     fontSize: 15,
     color: "#161F3D"
   },
   loginButton: {
-    marginHorizontal: 30,
+    marginHorizontal: width * 0.06,
     backgroundColor: "#E9446A",
     borderRadius: 4,
-    height: 52,
+    height: height * 0.06,
     alignItems: "center",
     justifyContent: "center"
   }

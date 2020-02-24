@@ -6,12 +6,14 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
-  Image
+  Image,
+  LayoutAnimation
 } from "react-native";
 
 import * as firebase from "firebase"
 
 export default class LoginScreen extends React.Component {
+
   state = {
     email: "",
     password: "",
@@ -28,6 +30,7 @@ export default class LoginScreen extends React.Component {
   };
 
   render() {
+    LayoutAnimation.easeInEaseOut();
     return (
       <View style={styles.container}>
       <Image style={styles.image}
@@ -69,7 +72,7 @@ export default class LoginScreen extends React.Component {
         </TouchableOpacity>
         <TouchableOpacity style={{ alignSelf: "center", marginTop: 20 }} onPress={ () => this.props.navigation.push("register")} >
           <Text style={{ color: "#000000", fontSize: 13 }}>
-            New to TagAlong?
+            New to TagAlong?{" "}
             <Text style={{ fontWeight: "500", color: "#E9446A" }}>Sign Up</Text>
           </Text>
         </TouchableOpacity>

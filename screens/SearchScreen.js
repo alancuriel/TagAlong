@@ -16,12 +16,9 @@ export default class HomeScreen extends React.Component {
 
   signOutUser = () => {
 	  firebase.auth().signOut();
-
-
   }
 
   render() {
-
     return (
       <View style={styles.container}>
         <Text style={{fontSize: 24}}>Hi! {this.state.email}</Text>

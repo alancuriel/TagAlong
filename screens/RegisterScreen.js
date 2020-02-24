@@ -4,28 +4,50 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from "react-native";
 
 import * as firebase from "firebase";
+import Fire from "../Fire";
 
 export default class RegisterScreen extends React.Component {
   state = {
-	name: "",
+	firstName: "",
+	lastName: "",
+	aboutMe: "",
     email: "",
     password: "",
     errorMessage: null
   };
 
   handleLogin = () => {
-    firebase
+	if (this.state.firstName == "") {
+		this.setState({errorMessage: "First Name is empty"});
+	} else if (this.state.lastName == "") {
+		this.setState({errorMessage: "Last Name is empty"});
+	} else if (this.state.aboutMe == "") {
+		this.setState({errorMessage: "About me is empty"});
+	} else if (this.state.email == "") {
+		this.setState({errorMessage: "Email is empty"});
+	} else if (this.state.password == "") {
+		this.setState({errorMessage: "Password is empty"});
+	}else {
+		firebase
       .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password).then(userCredentials => {
-		  return userCredentials.user.updateProfile({
-			  displayName: this.state.name
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(userCredentials => {
+		  Fire.shared.createUserInfo({
+			  firstName: this.state.firstName,
+			  lastName: this.state.lastName,
+			  aboutMe: this.state.aboutMe
 		  });
-	  })
+        return userCredentials.user.updateProfile({
+          displayName: this.state.firstName
+        });
+      })
       .catch(error => this.setState({ errorMessage: error.message }));
+	}
   };
 
   render() {
@@ -38,21 +60,29 @@ export default class RegisterScreen extends React.Component {
             <Text style={styles.errorMessage}>{this.state.errorMessage}</Text>
           )}
         </View>
-		
 
-		
-        <View style={styles.form}>
-		<View>
-            <Text style={styles.inputTitle}>names</Text>
+        <ScrollView style={styles.form}>
+          <View>
+            <Text style={styles.inputTitle}>First Name</Text>
             <TextInput
               style={styles.input}
               autoCapitalize="none"
-              onChangeText={name => this.setState({ name })}
-              value={this.state.name}
+              onChangeText={firstName => this.setState({ firstName })}
+              value={this.state.firstName}
             ></TextInput>
           </View>
 
-		  <View>
+		  <View style={{marginTop: 32}}>
+            <Text style={styles.inputTitle}>Last Name</Text>
+            <TextInput
+              style={styles.input}
+              autoCapitalize="none"
+              onChangeText={lastName => this.setState({ lastName })}
+              value={this.state.lastName}
+            ></TextInput>
+          </View>
+
+          <View style={{marginTop: 32}}>
             <Text style={styles.inputTitle}>Email Address</Text>
             <TextInput
               style={styles.input}
@@ -72,17 +102,20 @@ export default class RegisterScreen extends React.Component {
               value={this.state.password}
             ></TextInput>
           </View>
-        </View>
+		  <View style={{marginTop: 32}}>
+            <Text style={styles.inputTitle}>About Me</Text>
+            <TextInput
+              style={styles.input}
+              autoCapitalize="none"
+              onChangeText={aboutMe => this.setState({ aboutMe })}
+              value={this.state.aboutMe}
+            ></TextInput>
+          </View>
+        </ScrollView>
 
         <TouchableOpacity style={styles.loginButton} onPress={this.handleLogin}>
           <Text style={{ color: "#FFF", fontWeight: "500" }}>Register</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity style={{ alignSelf: "center", marginTop: 20 }}>
-          <Text style={{ color: "#414959", fontSize: 13 }}>
-            New to TagAlong?{" "}
-            <Text style={{ fontWeight: "500", color: "#E9446A" }}>Sign Up</Text>
-          </Text>
-        </TouchableOpacity> */}
       </View>
     );
   }

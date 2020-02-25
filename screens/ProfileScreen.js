@@ -15,8 +15,6 @@ export default class HomeScreen extends React.Component {
     photoURL: "",
     firstName: "",
     lastName: "",
-    city: "",
-    state: "",
     Interests: ""
   };
 
@@ -24,12 +22,11 @@ export default class HomeScreen extends React.Component {
     const {email, displayName, photoURL} = firebase.auth().currentUser;
     
     this.setState({email,displayName, photoURL: photoURL ? photoURL: ""});
-    this.getPhotoPermission();
   }
 
   getPhotoPermission = async () => {
     if(Constants.platform.ios) {
-      const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL,Permissions.CAMERA);
+      const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
       if(status != "granted") {
         alert("We need permission access to your camera roll");
@@ -38,7 +35,8 @@ export default class HomeScreen extends React.Component {
   };
 
   pickImage = async() => {
-    let result = await ImagePicker.launchCameraAsync({
+    this.getPhotoPermission();
+    let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4,5]
@@ -81,12 +79,6 @@ export default class HomeScreen extends React.Component {
 
         <Text>Last Name</Text>
         <Text>{this.state.lastName}</Text>
-
-        <Text>City</Text>
-        <Text>{this.state.city}</Text>
-
-        <Text>State</Text>
-        <Text>{this.state.state}</Text>
 
         <Text>About Me</Text>
         <Text>{this.state.Interests}</Text>

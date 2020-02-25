@@ -20,8 +20,15 @@ export default class HomeScreen extends React.Component {
 
   componentDidMount() {
     const {email, displayName, photoURL} = firebase.auth().currentUser;
+    Fire.shared.getUserInfo().then(data => {
+      this.setState({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        Interests: data.aboutMe
+      });
+    });
     
-    this.setState({email,displayName, photoURL: photoURL ? photoURL: ""});
+    this.setState({email, displayName, photoURL: photoURL ? photoURL: ""});
   }
 
   getPhotoPermission = async () => {

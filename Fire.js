@@ -6,8 +6,8 @@ require("firebase/firestore");
 class Fire {
   constructor() {
     if (!firebase.apps.length) {
-        firebase.initializeApp(apiKeys.firebaseConfig);
-      }
+      firebase.initializeApp(apiKeys.firebaseConfig);
+    }
   }
 
   //TODO: update post method. Not finalized yet
@@ -35,15 +35,16 @@ class Fire {
     });
   };
 
-  createUserInfo = ({firstName, lastName, aboutMe}) => {
+  createUserInfo = ({ firstName, lastName, aboutMe }) => {
     return new Promise((res, rej) => {
       this.firestore
-        .collection("users").doc(this.uid)
+        .collection("users")
+        .doc(this.uid)
         .set({
           firstName,
           lastName,
           aboutMe,
-          timestamp: this.timestamp,
+          timestamp: this.timestamp
         })
         .then(ref => {
           res(ref);
@@ -54,14 +55,27 @@ class Fire {
     });
   };
 
+  getUserInfo = () => {
+    return new Promise((res, rej) => {
+      this.firestore
+        .collection("users")
+        .doc(this.uid)
+        .get().then( snapshot => {
+          res(snapshot.data());
+        }).catch( error => {
+          rej(error);
+        });
+    });
+  };
+
   uploadProfilePic = async uri => {
     const remoteUri = await this.uploadPhotoAsync(uri);
 
-    firebase.auth().currentUser.updateProfile({photoURL: remoteUri});
+    firebase.auth().currentUser.updateProfile({ photoURL: remoteUri });
   };
 
   uploadPhotoAsync = async uri => {
-    const path = 'photos' + '/' + this.uid + '/' + Date.now() + '.jpg';
+    const path = "photos" + "/" + this.uid + "/" + Date.now() + ".jpg";
 
     return new Promise(async (res, rej) => {
       const response = await fetch(uri);

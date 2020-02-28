@@ -11,8 +11,18 @@ class Fire {
   }
 
   //TODO: update post method. Not finalized yet
-  addPost = async ({ title, date, description, category, localUri }) => {
-    const remoteUri = await this.uploadPhotoAsync(localUri);
+  addPost = async ({
+    title,
+    date,
+    description,
+    category,
+    localUri,
+    eventAddress,
+    eventLatitude,
+    eventLongitude,
+    eventGeoHash,
+    userGeoHash
+  }) => {
 
     return new Promise((res, rej) => {
       this.firestore
@@ -23,8 +33,13 @@ class Fire {
           date,
           category,
           uid: this.uid,
+          email: this.email,
           timestamp: this.timestamp,
-          image: remoteUri
+          eventAddress,
+          eventLatitude,
+          eventLongitude,
+          eventGeoHash,
+          userGeoHash
         })
         .then(ref => {
           res(ref);
@@ -60,9 +75,11 @@ class Fire {
       this.firestore
         .collection("users")
         .doc(this.uid)
-        .get().then( snapshot => {
+        .get()
+        .then(snapshot => {
           res(snapshot.data());
-        }).catch( error => {
+        })
+        .catch(error => {
           rej(error);
         });
     });
@@ -105,6 +122,10 @@ class Fire {
 
   get uid() {
     return (firebase.auth().currentUser || {}).uid;
+  }
+
+  get email() {
+    return (firebase.auth().currentUser || {}).email;
   }
 
   get timestamp() {

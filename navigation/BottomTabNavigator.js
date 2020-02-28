@@ -16,9 +16,8 @@ export default class BottomTabNavigator extends React.Component {
             <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
                 <BottomTab.Screen name="Home" 
                     component={HomeScreen} 
-                    
                     options={{
-                        tabBarLabel: "Discover",
+                        tabBarLabel: "Discover"
                     }}/>
 
                 <BottomTab.Screen name="Search"

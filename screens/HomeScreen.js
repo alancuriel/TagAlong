@@ -1,44 +1,35 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import * as firebase from "firebase";
+import * as Permissions from "expo-permissions";
+import CreatePostScreen from "./CreatePostScreen";
+import { createStackNavigator } from "@react-navigation/stack";
+import PostsScreen from "./PostsScreen";
+
+const Stack = createStackNavigator();
 
 export default class HomeScreen extends React.Component {
-  state = {
-    email: "",
-    displayName: ""
+  componentDidMount() {
+    this.getLocationPermissions();
+  }
+
+  getLocationPermissions = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+    if (status != "granted") {
+      alert("We need your permission to show the posts around your area.");
+    }
   };
 
-  componentDidMount() {
-	  const {email, displayName} = firebase.auth().currentUser;
-
-	  this.setState({email,displayName});
-  }
-
-  signOutUser = () => {
-	  firebase.auth().signOut();
-
-
-  }
-
   render() {
-
     return (
-      <View style={styles.container}>
-        <Text style={{fontSize: 24}}>Hi! {this.state.email}</Text>
-
-      <TouchableOpacity style={{marginTop: 32}} onPress={this.signOutUser}>
-        <Text>Sign Out</Text>
-      </TouchableOpacity>
-      </View>
+      <Stack.Navigator initialRouteName="posts">
+        <Stack.Screen
+          name="createPost"
+          component={CreatePostScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="posts" component={PostsScreen} />
+      </Stack.Navigator>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});

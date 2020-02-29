@@ -23,7 +23,6 @@ class Fire {
     eventGeoHash,
     userGeoHash
   }) => {
-
     return new Promise((res, rej) => {
       this.firestore
         .collection("posts")
@@ -39,7 +38,9 @@ class Fire {
           eventLatitude,
           eventLongitude,
           eventGeoHash,
-          userGeoHash
+		  userGeoHash,
+		  userPic: this.photoURL,
+		  userName: this.displayName
         })
         .then(ref => {
           res(ref);
@@ -48,6 +49,37 @@ class Fire {
           rej(error);
         });
     });
+  };
+
+  getNearbyPosts = ({ lower, upper }) => {
+	return new Promise((res,rej) => {
+		this.firestore
+        .collection("posts")
+        .where("eventGeoHash", ">=", lower)
+        .where("eventGeoHash", "<=", upper)
+		.get()
+		.then(snapshot => {
+			res(snapshot.docs.map(doc => [doc.id,doc.data()]));
+		}).catch(error => {
+			rej(error);
+		});
+	});
+
+
+
+    // try {
+    //   const posts = [];
+    //   this.firestore
+    //     .collection("posts")
+    //     .where("eventGeoHash", ">=", lower)
+    //     .where("eventGeoHash", "<=", upper)
+    //     .onSnapshot(snapshot => {
+    //       snapshot.docs.forEach(post => posts.push(post.data()));
+    //     });
+    //   return posts;
+    // } catch (error) {
+    //   return { error };
+    // }
   };
 
   createUserInfo = ({ firstName, lastName, aboutMe }) => {
@@ -127,7 +159,13 @@ class Fire {
   get email() {
     return (firebase.auth().currentUser || {}).email;
   }
+  get photoURL() {
+	  return (firebase.auth().currentUser || {}).photoURL;
+  }
 
+  get displayName() {
+	  return (firebase.auth().currentUser || {}).displayName;
+  }
   get timestamp() {
     return Date.now();
   }

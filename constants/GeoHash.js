@@ -15,7 +15,7 @@ class GeoHash {
     const upperLon = longitude + lon * distance;
 
     const lower = geohash.encode(lowerLat, lowerLon);
-    const upper = geohash.encode(greaterLat, greaterLon);
+    const upper = geohash.encode(upperLat, upperLon);
 
     return {
       lower,

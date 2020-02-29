@@ -1,20 +1,52 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import * as firebase from "firebase"
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList
+} from "react-native";
+import * as firebase from "firebase";
+import * as Location from "expo-location";
+import GeoHash from "../constants/GeoHash";
+import Fire from "../Fire";
+import Post from "../components/Post";
 
 export default class PostsScreen extends React.Component {
-    state = {
-        email: "",
-        displayName: ""
-    };
+  state = {
+    miles: 10,
+    error: null,
+    posts: null
+  };
 
+  componentDidMount() {
+    this.loadPosts();
+  }
 
-    componentDidMount() {
-        const { email, displayName } = firebase.auth().currentUser;
+  loadPosts = async () => {
+    const userLocation = await Location.getCurrentPositionAsync();
 
-        this.setState({ email, displayName });
-    }
+    const range = GeoHash.shared.getGeohashRange(
+      userLocation.coords.latitude,
+      userLocation.coords.longitude,
+      this.state.miles
+    );
 
+    Fire.shared
+      .getNearbyPosts({
+        lower: range.lower,
+        upper: range.upper
+      })
+      .then(data => {
+        if (data)
+          this.setState({
+            posts: data.map(d => {
+              return { key: d[0], value: d[1] };
+            })
+          });
+      })
+      .catch(error => this.setState({ error }));
+  };
 
   render() {
     return (
@@ -27,6 +59,14 @@ export default class PostsScreen extends React.Component {
         >
           <Text style={{ color: "lightblue" }}>Create Post</Text>
         </TouchableOpacity>
+
+        <FlatList
+          style={styles.posts}
+          data={this.state.posts}
+		  renderItem={itemData => <Post postData={itemData.item.value} />}
+		  refreshing={false}
+		  onRefresh={() => this.loadPosts()}
+        />
       </View>
     );
   }
@@ -38,5 +78,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center"
+  },
+  posts: {
+    width: "95%"
   }
 });

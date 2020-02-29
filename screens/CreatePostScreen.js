@@ -11,7 +11,6 @@ import {
 import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
 import Fire from "../Fire";
-import * as ImagePicker from "expo-image-picker";
 import EventCategories from "../constants/EventCategories";
 import GeoHash from "../constants/GeoHash";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -23,25 +22,35 @@ export default class CreatePostScreen extends React.Component {
     date: new Date(),
     description: "",
     category: 0,
-    location: "",
-    localUri: "../assets/splash.png" // Default Image
+    location: ""
+  };
+
+  componentDidMount() {
+    this.getLocationPermissions();
+  }
+
+  getLocationPermissions = async() => {
+    const {status} = await Permissions.getAsync(Permissions.LOCATION);
+
+    if(status != "granted") {
+      alert("We need permission access to your camera roll");
+    }
   };
 
   createPostHandlerAsync = async () => {
     if (this.state.title == "") {
-      this.setState({error: "Please add a title."});
+      this.setState({ error: "Please add a title." });
       return;
-    } else if(this.state.description == "") {
-      this.setState({error: "Please add a description."});
+    } else if (this.state.description == "") {
+      this.setState({ error: "Please add a description." });
       return;
-    } else if(this.state.location == "") {
-      this.setState({error: "Please add the event address"});
+    } else if (this.state.location == "") {
+      this.setState({ error: "Please add the event address" });
       return;
-    } else if(this.state.date < new Date().setHours(0,0,0,0)){
-      this.setState({error: "Please enter a valid date in the future"});
+    } else if (this.state.date < new Date().setHours(0, 0, 0, 0)) {
+      this.setState({ error: "Please enter a valid date in the future" });
       return;
     }
-
 
     const eventLocation = await Location.geocodeAsync(this.state.location);
     if (eventLocation.length <= 0) {
@@ -59,22 +68,25 @@ export default class CreatePostScreen extends React.Component {
       userLocation.coords.longitude.toString()
     );
 
-    Fire.shared.addPost({
-      title: this.state.title,
-      description: this.state.description,
-      date: this.state.date.toDateString(),
-      category: this.state.category,
-      localUri: this.state.localUri,
-      eventAddress: this.state.location,
-      eventLatitude: eventLocation[0].latitude,
-      eventLongitude: eventLocation[0].longitude,
-      eventGeoHash: eventGeoHash,
-      userGeoHash: userGeoHash
-    }).then(value => {
-      this.props.navigation.navigate("posts");
-    }).catch(error => {
-      this.setState({error});
-    });
+    Fire.shared
+      .addPost({
+        title: this.state.title,
+        description: this.state.description,
+        date: this.state.date.toDateString(),
+        category: this.state.category,
+        localUri: this.state.localUri,
+        eventAddress: this.state.location,
+        eventLatitude: eventLocation[0].latitude,
+        eventLongitude: eventLocation[0].longitude,
+        eventGeoHash: eventGeoHash,
+        userGeoHash: userGeoHash
+      })
+      .then(value => {
+        this.props.navigation.navigate("posts");
+      })
+      .catch(error => {
+        this.setState({ error });
+      });
   };
 
   render() {
@@ -125,10 +137,10 @@ export default class CreatePostScreen extends React.Component {
         <DateTimePicker
           style={styles.date}
           value={this.state.date}
-          onChange={(event,date) => this.setState({date})}
+          onChange={(event, date) => this.setState({ date })}
           mode="date"
           timeZoneOffsetInMinutes={0}
-          minimumDate={new Date().setHours(0,0,0,0)}
+          minimumDate={new Date().setHours(0, 0, 0, 0)}
         ></DateTimePicker>
 
         <TouchableOpacity onPress={this.createPostHandlerAsync}>

@@ -31,6 +31,12 @@ export default class HomeScreen extends React.Component {
     this.setState({email, displayName, photoURL: photoURL ? photoURL: ""});
   }
 
+  unsubscribe = null;
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   getPhotoPermission = async () => {
     if(Constants.platform.ios) {
       const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -76,10 +82,6 @@ export default class HomeScreen extends React.Component {
 
 
         <Text style={{fontSize: 14}}>Hi! {this.state.email}</Text>
-
-        <TouchableOpacity>
-          <Text style={styles.edit}>Edit</Text>
-        </TouchableOpacity>
 
         <Text>First Name</Text>
         <Text>{this.state.firstName}</Text>

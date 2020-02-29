@@ -1,31 +1,65 @@
-import React from "react"
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import PostsScreen from "../screens/PostsScreen";
+import CreatePostScreen from "../screens/CreatePostScreen";
 
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const BottomTab= createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
+const BottomTab = createBottomTabNavigator();
+const INITIAL_ROUTE_NAME = "Home";
 
 export default class BottomTabNavigator extends React.Component {
+  render() {
+    return (
+      <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+        <BottomTab.Screen
+          name="Home"
+          component={PostsScreen}
+          options={{
+            tabBarLabel: "Discover",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="map-marker"
+                color={color}
+                size={size}
+              />
+            )
+          }}
+        />
 
+        <BottomTab.Screen
+          name="Post"
+          component={CreatePostScreen}
+          options={{
+            tabBarLabel: "New Post",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="calendar-plus"
+                color={color}
+                size={size}
+              />
+            )
+          }}
+        />
 
-    render() {
-        return (
-            <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
-                <BottomTab.Screen name="Home" 
-                    component={HomeScreen} 
-                    options={{
-                        tabBarLabel: "Discover"
-                    }}/>
-
-                <BottomTab.Screen name="Search"
-                    component={SearchScreen}/>
-                
-                <BottomTab.Screen name="Profile"
-                    component={ProfileScreen}/>
-            </BottomTab.Navigator>
-        );
-    }
+        <BottomTab.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{
+            tabBarLabel: "Profile",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="account-circle"
+                color={color}
+                size={size}
+              />
+            )
+          }}
+        />
+      </BottomTab.Navigator>
+    );
+  }
 }

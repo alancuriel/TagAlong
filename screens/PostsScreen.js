@@ -55,7 +55,7 @@ export default class PostsScreen extends React.Component {
 
         <TouchableOpacity
           style={{ marginTop: 32 }}
-          onPress={() => this.props.navigation.navigate("createPost")}
+          onPress={() => this.props.navigation.navigate("Post")}
         >
           <Text style={{ color: "lightblue" }}>Create Post</Text>
         </TouchableOpacity>

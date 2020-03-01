@@ -34,7 +34,7 @@ export default class App extends React.Component {
         <Stack.Navigator initialRouteName="load">
         <Stack.Screen name="home" component={BottomTabNavigator} options={{headerShown:false}}/>
         <Stack.Screen name="load" component={LoadingScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="register" component={RegisterScreen}/>
+        <Stack.Screen name="register" component={RegisterScreen} options={{headerShown:false}}/>
         <Stack.Screen name="login" component={LoginScreen} options={{headerShown:false}}/>
         </Stack.Navigator>
       </NavigationContainer>

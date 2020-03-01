@@ -2,6 +2,8 @@ import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import EventCategories from "../constants/EventCategories";
 import moment from "moment";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as MailComposer from "expo-mail-composer";
 
 const Post = props => {
   const getCategory = category => {
@@ -19,6 +21,13 @@ const Post = props => {
       default:
         return "No Category";
     }
+  };
+
+  const composeMailAsync = async () => {
+    await MailComposer.composeAsync({
+      recipients: [props.postData.email],
+      subject: props.postData.title
+    });
   };
 
   return (
@@ -42,6 +51,10 @@ const Post = props => {
       <Text>{getCategory(props.postData.category)}</Text>
       <Text>{props.postData.description}</Text>
       <Text>{props.postData.date}</Text>
+
+      <TouchableOpacity onPress={composeMailAsync}>
+        <MaterialCommunityIcons name="email" style={styles.email} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -60,6 +73,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25
+  },
+  email: {
+    width: "20",
+    height: "20"
   }
 });
 

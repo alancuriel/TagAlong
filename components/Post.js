@@ -53,7 +53,7 @@ const Post = props => {
       <Text>{props.postData.date}</Text>
 
       <TouchableOpacity onPress={composeMailAsync}>
-        <MaterialCommunityIcons name="email" style={styles.email} />
+        <MaterialCommunityIcons name="email" size={25} color="pink"/>
       </TouchableOpacity>
     </View>
   );
@@ -73,10 +73,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25
-  },
-  email: {
-    width: "20",
-    height: "20"
   }
 });
 

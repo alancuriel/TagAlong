@@ -4,19 +4,22 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  Modal
 } from "react-native";
 import * as firebase from "firebase";
 import * as Location from "expo-location";
 import GeoHash from "../constants/GeoHash";
 import Fire from "../Fire";
 import Post from "../components/Post";
+import { TextInput } from "react-native-gesture-handler";
 
 export default class PostsScreen extends React.Component {
   state = {
     miles: 10,
     error: null,
-    posts: null
+    posts: null,
+    showMileSelector: false
   };
 
   componentDidMount() {
@@ -46,27 +49,83 @@ export default class PostsScreen extends React.Component {
           });
       })
       .catch(error => this.setState({ error }));
+      console.log(this.state.posts);
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{ fontSize: 24 }}>Hi! {this.state.email}</Text>
+        <View style={{ flexDirection: "row", marginTop: 35 }}>
+          <TouchableOpacity
+            onPress={() => this.setState({ showMileSelector: true })}
+          >
+            <Text style={{ color: "blue" }}>
+              Around {this.state.miles} Miles
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={{ marginTop: 32 }}
-          onPress={() => this.props.navigation.navigate("Post")}
-        >
-          <Text style={{ color: "lightblue" }}>Create Post</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("Post")}
+          >
+            <Text style={{ color: "lightblue" }}>Create Post</Text>
+          </TouchableOpacity>
+        </View>
 
         <FlatList
           style={styles.posts}
           data={this.state.posts}
-		  renderItem={itemData => <Post postData={itemData.item.value} />}
-		  refreshing={false}
-		  onRefresh={() => this.loadPosts()}
+          renderItem={itemData => <Post postData={itemData.item.value} />}
+          refreshing={false}
+          onRefresh={() => this.loadPosts()}
         />
+        <Modal
+          visible={this.state.showMileSelector}
+          transparent={true}
+          animationType="slide"
+        >
+          <View style={styles.miles}>
+            <TouchableOpacity
+              onPress={async () => {
+                this.setState({ miles: 10, showMileSelector: false });
+                await this.loadPosts();
+              }}
+            >
+              <Text>10 Miles</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={async () => {
+                this.setState({ miles: 15, showMileSelector: false });
+                await this.loadPosts();
+              }}
+            >
+              <Text>15 Miles</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={async () => {
+                this.setState({ miles: 30, showMileSelector: false });
+                await this.loadPosts();
+              }}
+            >
+              <Text>30 Miles</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={async () => {
+                this.setState({ miles: 50, showMileSelector: false });
+                await this.loadPosts();
+              }}
+            >
+              <Text>50 Miles</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={async () => {
+                this.setState({ miles: 100, showMileSelector: false });
+                await this.loadPosts();
+              }}
+            >
+              <Text>100 Miles</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -81,5 +140,16 @@ const styles = StyleSheet.create({
   },
   posts: {
     width: "95%"
+  },
+  miles: {
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    backgroundColor: "#717171",
+    padding: 20,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    position: "absolute"
   }
 });

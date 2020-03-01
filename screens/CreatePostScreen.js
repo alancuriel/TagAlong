@@ -82,7 +82,7 @@ export default class CreatePostScreen extends React.Component {
         userGeoHash: userGeoHash
       })
       .then(value => {
-        this.props.navigation.navigate("posts");
+        this.props.navigation.navigate("Post");
       })
       .catch(error => {
         this.setState({ error });

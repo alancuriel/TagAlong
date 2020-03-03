@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30
   },
   inputTitle: {
-    color: "#8A8F9E",
+    color: "#000000",
     fontSize: 10,
     textTransform: "uppercase"
   },

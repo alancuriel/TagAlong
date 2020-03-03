@@ -5,7 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
-  Modal
+  Modal,
+  Dimensions
 } from "react-native";
 import * as firebase from "firebase";
 import * as Location from "expo-location";
@@ -130,16 +131,17 @@ export default class PostsScreen extends React.Component {
     );
   }
 }
+var {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#2E2C3A",
     alignItems: "center",
     justifyContent: "center"
   },
   posts: {
-    width: "95%"
+    width: width * 0.95
   },
   miles: {
     borderTopRightRadius: 20,

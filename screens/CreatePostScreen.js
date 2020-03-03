@@ -2,12 +2,14 @@ import React from "react";
 import {
   Modal,
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Picker
+  Picker,
+  ScrollView,
+  Dimensions
 } from "react-native";
+import {Text} from 'react-native-elements'
 import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
 import Fire from "../Fire";
@@ -92,20 +94,19 @@ export default class CreatePostScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Title</Text>
+        <Text h5 style={styles.textCategory}>Title:</Text>
         <TextInput
           style={styles.input}
           onChangeText={title => this.setState({ title })}
           value={this.state.title}
         ></TextInput>
-
-        <Text>Category</Text>
         <Picker
           selectedValue={this.state.category}
           style={styles.categorySelect}
           onValueChange={(itemValue, itemIndex) =>
             this.setState({ category: itemValue })
           }
+          itemStyle={{color:'white'}}
         >
           <Picker.Item label="Concert" value={EventCategories.CONCERT} />
           <Picker.Item label="Sports" value={EventCategories.SPORTS} />
@@ -120,14 +121,14 @@ export default class CreatePostScreen extends React.Component {
           />
         </Picker>
 
-        <Text>Description</Text>
+        <Text h5 style={styles.textCategory}>Description:</Text>
         <TextInput
           style={styles.input}
           onChangeText={description => this.setState({ description })}
           value={this.state.description}
         ></TextInput>
 
-        <Text>Address City,State</Text>
+        <Text h5 style={styles.textCategory}>Address,City,State:</Text>
         <TextInput
           style={styles.input}
           onChangeText={location => this.setState({ location })}
@@ -141,34 +142,53 @@ export default class CreatePostScreen extends React.Component {
           mode="date"
           timeZoneOffsetInMinutes={0}
           minimumDate={new Date().setHours(0, 0, 0, 0)}
+          itemStyle={{color:'white'}}
         ></DateTimePicker>
 
-        <TouchableOpacity onPress={this.createPostHandlerAsync}>
-          <Text style={{ color: "blue" }}>Confirm</Text>
+        <TouchableOpacity onPress={this.createPostHandlerAsync} style={styles.logoffButton}>
+          <Text style={{ color: "white", fontWeight: '500'}}>Confirm</Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
 
+var {height, width} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "gray",
+    flexDirection: 'column',
+    backgroundColor: "#2E2C3A",
     alignItems: "center",
     justifyContent: "center"
   },
+  logoffButton: {
+    marginHorizontal: width * 0.06,
+    backgroundColor: "#E9446A",
+    borderRadius: 40,
+    height: height * 0.06,
+    alignItems: "center",
+    justifyContent: "center",
+    width: width * 0.3
+  },
+  textCategory: {
+  color: '#FFFFFF'
+},
   input: {
-    backgroundColor: "white"
+    backgroundColor: "#E9446A",
+    height: height * 0.04,
+    width: width * 0.8,
+    borderRadius: 5
   },
   categorySelect: {
-    width: "80%",
-    fontSize: 12
+    width: height * 0.3,
+    fontSize: 12,
+    color: "white"
   },
   date: {
-    height: 100,
-    width: 300,
-    marginHorizontal: 25,
-    position: "relative"
+    height: height * 0.3,
+    width: width * 0.8,
+    color:"#FFFFFF"
   }
 });

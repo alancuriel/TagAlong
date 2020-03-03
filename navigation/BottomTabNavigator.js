@@ -14,7 +14,7 @@ const INITIAL_ROUTE_NAME = "Home";
 export default class BottomTabNavigator extends React.Component {
   render() {
     return (
-      <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+      <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME} tabBarOptions={{inactiveBackgroundColor:"#2E2C3A", activeBackgroundColor:"#2E2C3A",adaptive:"true"}}>
         <BottomTab.Screen
           name="Home"
           component={PostsScreen}
@@ -23,7 +23,7 @@ export default class BottomTabNavigator extends React.Component {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="map-marker"
-                color={color}
+                color="white"
                 size={size}
               />
             )
@@ -38,7 +38,7 @@ export default class BottomTabNavigator extends React.Component {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="calendar-plus"
-                color={color}
+                color="white"
                 size={size}
               />
             )
@@ -53,7 +53,7 @@ export default class BottomTabNavigator extends React.Component {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="account-circle"
-                color={color}
+                color="white"
                 size={size}
               />
             )

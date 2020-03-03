@@ -32,12 +32,6 @@ export default class HomeScreen extends React.Component {
     this.setState({email, displayName, photoURL: photoURL ? photoURL: ""});
   }
 
-  unsubscribe = null;
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
   getPhotoPermission = async () => {
     if(Constants.platform.ios) {
       const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);

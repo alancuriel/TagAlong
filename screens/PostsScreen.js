@@ -25,9 +25,11 @@ export default class PostsScreen extends React.Component {
 
   componentDidMount() {
     this.loadPosts();
+    
   }
 
   loadPosts = async () => {
+    var start = new Date();
     const userLocation = await Location.getCurrentPositionAsync();
 
     const range = GeoHash.shared.getGeohashRange(
@@ -50,7 +52,8 @@ export default class PostsScreen extends React.Component {
           });
       })
       .catch(error => this.setState({ error }));
-      console.log(this.state.posts);
+
+      console.log(new Date() - start);
   };
 
   render() {

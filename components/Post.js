@@ -1,5 +1,6 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image, Dimensions } from "react-native";
+import {Text} from "react-native-elements"
 import EventCategories from "../constants/EventCategories";
 import moment from "moment";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -32,6 +33,7 @@ const Post = props => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.containerin}>
       <View style={styles.user}>
         {props.postData.userPic ? (
           <Image
@@ -44,35 +46,50 @@ const Post = props => {
             source={require("../assets/default.jpg")}
           ></Image>
         )}
-        <Text>{props.postData.userName}</Text>
-      </View>
-      <Text>{props.postData.title}</Text>
-      <Text>{moment(props.postData.timestamp).fromNow()}</Text>
-      <Text>{getCategory(props.postData.category)}</Text>
-      <Text>{props.postData.description}</Text>
-      <Text>{props.postData.date}</Text>
-
-      <TouchableOpacity onPress={composeMailAsync}>
+        <Text h4 style={styles.txt}>{props.postData.userName}</Text>
+        <TouchableOpacity onPress={composeMailAsync} style={styles.mail}> 
         <MaterialCommunityIcons name="email" size={25} color="pink"/>
       </TouchableOpacity>
+      </View>
+      <Text style={styles.txt}>{moment(props.postData.timestamp).fromNow()}</Text>
+      <Text style={styles.txt}>{props.postData.title}</Text>
+      <Text style={styles.txt}>{getCategory(props.postData.category)}</Text>
+      <Text style={styles.txt}>{props.postData.description}</Text>
+      <Text style={styles.txt}>{props.postData.date}</Text>
+      </View>
     </View>
   );
 };
+
+var {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     marginTop: 15,
     flex: 1,
-    backgroundColor: "#9999",
-    width: "100%"
+    backgroundColor: "#E9446A",
+    width: width * 0.95,
+    borderRadius: 20
+  },
+  containerin:{
+    width: width * 0.9,
+    marginLeft: width * 0.02
   },
   user: {
-    flexDirection: "row"
+    flexDirection: "row",
+    width: width * 0.9,
+    alignItems: "flex-end"
   },
   pic: {
     width: 50,
     height: 50,
     borderRadius: 25
+  },
+  txt:{
+    color:"white"
+  },
+  mail:{
+    alignItems: "flex-end"
   }
 });
 
